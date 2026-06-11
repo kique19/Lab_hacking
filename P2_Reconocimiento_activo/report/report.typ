@@ -173,6 +173,10 @@ Decisiones de diseño destacadas:
   ),
   caption: [Resultados del descubrimiento de hosts.]
 )
+#figure(
+  image("../evidencias/captura_script.png", width: 100%),
+  caption: [Ejecución del script de descubrimiento. Se observa cómo 10.0.2.2 es detectado como activo y 10.0.2.100 no genera respuesta.]
+)
 
 == Parte 2 --- Comportamiento por defecto de Nmap
 
@@ -215,6 +219,10 @@ Evidencia obtenida con `nmap -v 10.0.2.2`:
   ),
   caption: [Métricas del escaneo Nmap por defecto sobre `10.0.2.2`.]
 )
+#figure(
+  image("../evidencias/captura_nmap_terminal.png", width: 100%),
+  caption: [Salida de nmap -v mostrando el SYN Stealth Scan sobre 10.0.2.2.]
+)
 
 === Servicios descubiertos
 
@@ -232,6 +240,10 @@ Evidencia obtenida con `nmap -v 10.0.2.2`:
     [otros 994],[Filtrado],[Sin respuesta del gateway],
   ),
   caption: [Puertos descubiertos por Nmap en `10.0.2.2`.]
+)
+#figure(
+  image("../evidencias/captura_wireshark.png", width: 100%),
+  caption: [Captura Wireshark con filtro tcp.flags.syn == 1 and tcp.flags.ack == 0 mostrando los paquetes SYN enviados por Nmap.]
 )
 
 La presencia de los puertos 902 y 912 es característica del hipervisor VMware,
@@ -255,7 +267,6 @@ del host Windows subyacente.
 
 // ── 4. Conclusiones ──────────────────────────────────────
 = Conclusiones
-
 - La función `craft_discovery_pkts` implementa correctamente el descubrimiento
   multi-protocolo con todos los argumentos obligatorios y opcionales requeridos.
 
