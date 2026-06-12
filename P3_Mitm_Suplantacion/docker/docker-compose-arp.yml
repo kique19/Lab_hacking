@@ -1,0 +1,53 @@
+networks:
+  lan_victima:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.19.0.0/24
+  lan_externa:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+
+services:
+
+  victima:
+    image: ubuntu:22.04
+    container_name: victima
+    networks:
+      lan_victima:
+        ipv4_address: 172.19.0.10
+    command: sleep infinity
+    cap_add:
+      - NET_ADMIN
+
+  router:
+    image: ubuntu:22.04
+    container_name: router
+    networks:
+      lan_victima:
+        ipv4_address: 172.19.0.2
+      lan_externa:
+        ipv4_address: 172.20.0.2
+    command: sleep infinity
+    cap_add:
+      - NET_ADMIN
+
+  servidor_web:
+    image: nginx:alpine
+    container_name: servidor_web
+    networks:
+      lan_externa:
+        ipv4_address: 172.20.0.10
+
+  atacante:
+    image: kalilinux/kali-rolling
+    container_name: atacante
+    networks:
+      lan_victima:
+        ipv4_address: 172.19.0.99
+    command: sleep infinity
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW

@@ -1,0 +1,40 @@
+networks:
+  lan_dns:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/24
+
+services:
+
+  dns_server:
+    image: ubuntu/bind9:latest
+    container_name: dns_server
+    networks:
+      lan_dns:
+        ipv4_address: 172.21.0.10
+    environment:
+      - BIND9_USER=root
+    volumes:
+      - ./bind:/etc/bind
+
+  dns_resolver:
+    image: ubuntu:22.04
+    container_name: dns_resolver
+    networks:
+      lan_dns:
+        ipv4_address: 172.21.0.20
+    command: sleep infinity
+    cap_add:
+      - NET_ADMIN
+
+  atacante_dns:
+    image: kalilinux/kali-rolling
+    container_name: atacante_dns
+    networks:
+      lan_dns:
+        ipv4_address: 172.21.0.99
+    command: sleep infinity
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
